@@ -13,5 +13,8 @@
     position: relative;
     flex: 1;
     border-left: 1px solid #eee;
+    &_today {
+      border-radius: 50%;
+    }
   }
 }
