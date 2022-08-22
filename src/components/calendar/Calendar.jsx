@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import Navigation from "./../navigation/Navigation";
 import Week from "../week/Week";
 import Sidebar from "../sidebar/Sidebar";
-import events from "../../gateway/events";
 import { isTodayDisplayed } from "../../utils/dateUtils";
-import { getData } from "../../gateway/gateWay";
 
 import "./calendar.scss";
 
 function Calendar({ setModalVisibility, weekDates, eventList, loadEvents }) {
-  // const [eventList, setEventList] = useState([]);
-  // const loadEvents = async () => {
-  //   await getData().then((data) => setState(data));
-  // };
-
-  // useEffect(async () => {
-  //   loadEvents();
-  // }, []);
-  // console.log("calendar", eventList);
-
   useEffect(() => {
     if (isTodayDisplayed(weekDates)) {
       drawLine();
@@ -68,5 +56,12 @@ function Calendar({ setModalVisibility, weekDates, eventList, loadEvents }) {
     </section>
   );
 }
+
+Calendar.propTypes = {
+  setModalVisibility: PropTypes.func,
+  weekDates: PropTypes.array,
+  eventList: PropTypes.array,
+  loadEvents: PropTypes.func,
+};
 
 export default Calendar;

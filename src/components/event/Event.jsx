@@ -1,26 +1,40 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { deleteData } from "../../gateway/gateWay";
 
 import "./event.scss";
 
-const Event = ({ height, marginTop, title, time, id, loadEvents }) => {
+const Event = ({
+  height,
+  marginTop,
+  title,
+  time,
+  id,
+  loadEvents,
+  dateFrom,
+}) => {
   const [isDelBtnVisible, setDelVisibility] = useState(false);
-
+  const fifteenMins = 1000 * 60 * 15;
   const eventStyle = {
     height,
     marginTop,
   };
 
-  const deButtonStyle = {
+  const delButtonStyle = {
     top: height - 5,
     marginLeft: "auto",
   };
   const onClick = () => {
-    setDelVisibility(!isDelBtnVisible);
+    if (isDeletable()) {
+      setDelVisibility(!isDelBtnVisible);
+    }
   };
   const deleteHandler = () => {
-    deleteData(id).then(loadEvents());
+    deleteData(id).then(loadEvents);
+  };
+  const isDeletable = () => {
+    return dateFrom - new Date() <= fifteenMins;
   };
 
   return (
@@ -29,7 +43,7 @@ const Event = ({ height, marginTop, title, time, id, loadEvents }) => {
       <div className="event__time">{time}</div>
       {isDelBtnVisible && (
         <button
-          style={deButtonStyle}
+          style={delButtonStyle}
           className="delete-event-btn"
           onClick={deleteHandler}
         >
@@ -38,6 +52,16 @@ const Event = ({ height, marginTop, title, time, id, loadEvents }) => {
       )}
     </div>
   );
+};
+
+Event.propTypes = {
+  height: PropTypes.number,
+  marginTop: PropTypes.number,
+  title: PropTypes.string,
+  time: PropTypes.string,
+  id: PropTypes.string,
+  loadEvents: PropTypes.func,
+  dateFrom: PropTypes.object,
 };
 
 export default Event;

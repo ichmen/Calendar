@@ -1,28 +1,49 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { postData } from "../../gateway/gateWay";
 import { getDateTime } from "../../utils/dateUtils";
 import "./modal.scss";
 
-function Modal({ setModalVisibility, modalData, loadEvents }) {
+function Modal({ setModalVisibility, modalData, loadEvents, eventList }) {
   const [formData, setState] = useState(modalData);
   const { title, date, startTime, endTime, description } = formData;
-  // console.log(formData);
+  const eventStartDate = getDateTime(date, startTime);
+  const eventEndDate = getDateTime(date, endTime);
+  const sixHours = 1000 * 60 * 60 * 6;
 
   const handleChange = (event) => {
     setState({ ...formData, [event.target.name]: event.target.value });
   };
 
+  function eventCrossing() {
+    let timeCrossed = false;
+
+    eventList.forEach(({ dateFrom, dateTo }) => {
+      if (
+        (eventStartDate <= dateFrom && eventStartDate > dateTo) ||
+        (eventEndDate >= dateFrom && eventEndDate < dateTo) ||
+        (dateFrom >= eventStartDate && dateTo <= eventEndDate)
+      ) {
+        timeCrossed = true;
+      }
+    });
+    return timeCrossed;
+  }
+
   function formValidityCheck() {
-    if (
-      title &&
-      date &&
-      startTime &&
-      endTime &&
-      startTime.split(":").join("") < endTime.split(":").join("")
-    ) {
-      return true;
+    const isDataEntered = title && date && startTime && endTime;
+    debugger;
+    if (!isDataEntered) {
+      return false;
     }
-    return false;
+    const isTimeQuarter = !(
+      startTime.split(":")[1] % 15 && endTime.split(":")[1] % 15
+    );
+
+    const timeDirection =
+      startTime.split(":").join("") < endTime.split(":").join("");
+    const isDuration = eventEndDate - eventStartDate <= sixHours;
+    return !eventCrossing() && isTimeQuarter && timeDirection && isDuration;
   }
 
   const onSubmit = (event) => {
@@ -35,7 +56,9 @@ function Modal({ setModalVisibility, modalData, loadEvents }) {
         dateTo: getDateTime(date, endTime),
       };
 
-      postData(dataToPut).then(loadEvents()).then(onClose());
+      postData(dataToPut)
+        .then(() => loadEvents())
+        .then(onClose());
     } else {
       alert("Not all data entered");
     }
@@ -60,7 +83,6 @@ function Modal({ setModalVisibility, modalData, loadEvents }) {
               className="event-form__field"
               onChange={handleChange}
               value={formData.title}
-              required="required"
             />
             <div className="event-form__time">
               <input
@@ -69,14 +91,12 @@ function Modal({ setModalVisibility, modalData, loadEvents }) {
                 className="event-form__field"
                 onChange={handleChange}
                 value={formData.date}
-                required="required"
               />
               <input
                 type="time"
                 name="startTime"
                 className="event-form__field"
                 onChange={handleChange}
-                required="required"
                 value={formData.startTime}
               />
               <span>-</span>
@@ -86,7 +106,6 @@ function Modal({ setModalVisibility, modalData, loadEvents }) {
                 className="event-form__field"
                 onChange={handleChange}
                 value={formData.endTime}
-                required="required"
               />
             </div>
             <textarea
@@ -108,5 +127,12 @@ function Modal({ setModalVisibility, modalData, loadEvents }) {
     </div>
   );
 }
+
+Modal.propTypes = {
+  setModalVisibility: PropTypes.func,
+  modalData: PropTypes.object,
+  loadEvents: PropTypes.func,
+  eventList: PropTypes.array,
+};
 
 export default Modal;

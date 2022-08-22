@@ -1,6 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
 import classNames from "classnames";
-
 import { days, isToday, isFutureDate } from "../../utils/dateUtils.js";
 
 const Navigation = ({ weekDates }) => {
@@ -33,6 +33,10 @@ const Navigation = ({ weekDates }) => {
       })}
     </header>
   );
+};
+
+Navigation.propTypes = {
+  weekDates: PropTypes.array,
 };
 
 export default Navigation;

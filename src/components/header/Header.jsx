@@ -1,19 +1,14 @@
-import React, { useState } from "react";
-
+import React from "react";
+import PropTypes from "prop-types";
 import "./header.scss";
-import Modal from "../modal/Modal";
 
 const Header = ({ month, setToday, weekChange, setModalVisibility }) => {
-  // const [isModalVisible, setModalVisibility] = useState(false);
   const newTask = () => {
     setModalVisibility(true);
   };
-  const closeModal = () => {
-    setModalVisibility(false);
-  };
+
   return (
     <header className="header">
-      {/* <Modal onClose={closeModal} isModalVisible={isModalVisible} /> */}
       <button className="button create-event-btn" onClick={() => newTask()}>
         <i className="fas fa-plus create-event-btn__icon"></i>
         Create
@@ -35,6 +30,13 @@ const Header = ({ month, setToday, weekChange, setModalVisibility }) => {
       </div>
     </header>
   );
+};
+
+Header.propTypes = {
+  month: PropTypes.string,
+  setToday: PropTypes.func,
+  weekChange: PropTypes.func,
+  setModalVisibility: PropTypes.func,
 };
 
 export default Header;

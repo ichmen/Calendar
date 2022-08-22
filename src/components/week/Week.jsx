@@ -1,15 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Day from "../day/Day";
 import { formatMins } from "../../utils/dateUtils";
-import { useEffect } from "react";
-import { getData } from "../../gateway/gateWay";
 import "./week.scss";
 
 const Week = ({ weekDates, events, setModalVisibility, loadEvents }) => {
-  // console.log("week", events);
-
   const onClick = (event) => {
-    // console.log(event);
     if (event.target.className !== "calendar__time-slot") {
       return;
     }
@@ -55,6 +51,13 @@ const Week = ({ weekDates, events, setModalVisibility, loadEvents }) => {
       })}
     </div>
   );
+};
+
+Week.propTypes = {
+  weekDates: PropTypes.array,
+  events: PropTypes.array,
+  setModalVisibility: PropTypes.func,
+  loadEvents: PropTypes.func,
 };
 
 export default Week;

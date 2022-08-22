@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
 import Header from "./components/header/Header.jsx";
 import Calendar from "./components/calendar/Calendar.jsx";
 import Modal from "./components/modal/Modal.jsx";
@@ -29,7 +28,9 @@ function App() {
   const [eventList, setEventList] = useState([]);
 
   const loadEvents = () => {
-    getData().then((data) => setEventList(data));
+    getData()
+      .then((data) => setEventList(data))
+      .catch(() => alert("Internal Server Error. Can't display events"));
   };
 
   useEffect(() => {
@@ -73,6 +74,7 @@ function App() {
           setModalVisibility={modalHandle}
           modalData={modalData}
           loadEvents={loadEvents}
+          eventList={eventList}
         />
       )}
     </>
