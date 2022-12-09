@@ -1,6 +1,6 @@
   <html>
     <h1>Calendar with ToDo feature</h2>
-    <h3><a href="https://superb-semifreddo-01cc2b.netlify.app/" target="_blank">Project Netify link </a></h3>
+    <h3><a href="https://earnest-pastelito-941aba.netlify.app/" target="_blank">Project Netify link </a></h3>
    <h3>Tech stack:</h3>
     <ul>
       <li>HTML</li>
