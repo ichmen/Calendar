@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from "react";
-import Header from "./components/header/Header.jsx";
-import Calendar from "./components/calendar/Calendar.jsx";
-import Modal from "./components/modal/Modal.jsx";
-import { getData } from "./gateway/gateWay.js";
-import {
-  getWeekStartDate,
-  generateWeekRange,
-  months,
-} from "../src/utils/dateUtils.js";
+import React, { useState, useEffect } from 'react';
+import Header from './components/header/Header.jsx';
+import Calendar from './components/calendar/Calendar.jsx';
+import Modal from './components/modal/Modal.jsx';
+import { getData } from './gateway/gateWay.js';
+import { getWeekStartDate, generateWeekRange, months } from '../src/utils/dateUtils.js';
 
-import "./common.scss";
+import './styles/common.scss';
 
 function App() {
   const emptyModalData = {
-    description: "",
-    date: "",
-    startTime: "",
-    endTime: "",
-    title: "",
+    description: '',
+    date: '',
+    startTime: '',
+    endTime: '',
+    title: '',
   };
 
   const [weekStartDate, changeState] = useState(new Date());
@@ -29,7 +25,7 @@ function App() {
 
   const loadEvents = () => {
     getData()
-      .then((data) => setEventList(data))
+      .then(data => setEventList(data))
       .catch(() => alert("Internal Server Error. Can't display events"));
   };
 
@@ -37,9 +33,7 @@ function App() {
     loadEvents();
   }, []);
 
-  const month = [
-    ...new Set(weekDates.map((date) => months[date.getMonth()])),
-  ].join("-");
+  const month = [...new Set(weekDates.map(date => months[date.getMonth()]))].join('-');
 
   const modalHandle = (modalVisability, data = emptyModalData) => {
     setModalVisibility(modalVisability);
@@ -50,7 +44,7 @@ function App() {
     changeState(new Date());
   };
 
-  const weekChange = (days) => {
+  const weekChange = days => {
     let newDate = new Date(weekStartDate);
     changeState(new Date(newDate.setDate(newDate.getDate() + days)));
   };
