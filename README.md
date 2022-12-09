@@ -9,9 +9,7 @@
       <li>Flexbox</li>
       <li>BEM</li>
       <li>JS</li>
-      <li>React</li>
-      <li>Redux</li>
-      <li>React-router</li>
+      <li>React</li>      
     </ul>
     <h3>Author</h3>
      <li> V.Kolosov 2022 </li>
